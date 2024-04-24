@@ -1,4 +1,3 @@
-// Importing necessary modules
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
@@ -73,8 +72,8 @@ app.post("/adicionar", upload.single("imagem"), async (req, res) => {
 app.put("/editar/:id", upload.single("imagem"), async (req, res) => {
 
   try {
-    // Retrieve the ID of the recipe to be updated from the request parameters
-    const id = req.params.id;
+
+        const id = req.params.id;
 
     const receitaExistente = await receitas.findById(id);
 
@@ -90,11 +89,9 @@ app.put("/editar/:id", upload.single("imagem"), async (req, res) => {
       const data = req.file.buffer;
       await blockBlobClient.upload(data, data.length);
       
-      // Update the 'imagem' field of the existing recipe with the URL of the uploaded image
       receitaExistente.imagem = blockBlobClient.url;
     }
 
-    // Update other fields of the recipe if provided in the request body
     const { nome, ingredientes, modoPreparo, categorias, tempoPreparo, rendimento } = req.body;
     if (nome) receitaExistente.nome = nome;
     if (ingredientes) receitaExistente.ingredientes = ingredientes;
