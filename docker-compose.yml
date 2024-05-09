@@ -1,0 +1,30 @@
+# Definindo a versão do Compose
+version: '3'
+
+# Definindo os serviços (imagens)
+services:
+  
+  # Serviço de frontend
+  frontend:
+    # Configuração para construir o frontend a partir do contexto(diretório) ./front-end
+    build:
+      context: ./front-end
+    # cria a imagem usando o login do container registriy que será usado como repositório na azure
+    image: facecookteste.azurecr.io/frontend:v1
+    # Mapeamento de porta para acesso externo, porta 3000 do host para porta 80 do contêiner
+    ports:
+      - "80:80"
+    # Dependência do serviço backend, o frontend só será iniciado após o backend estar disponível
+    depends_on:
+      - backend
+
+  # Serviço de backend
+  backend:
+    # Configuração para construir o backend a partir do contexto(diretório) ./back-end
+    build:
+      context: ./back-end
+    # cria a imagem usando o login do container registriy que será usado como repositório na azure
+    image: facecookteste.azurecr.io/backend:v1
+    # Mapeamento de porta para acesso externo, porta 5000 do host para porta 5000 do contêiner
+    ports:
+      - "5000:5000"
